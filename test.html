@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPlate App Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .design-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: #000;
+            border-radius: 25px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 20px;
+            height: calc(100% - 144px);
+            overflow-y: auto;
+        }
+
+        .scan-area {
+            border: 3px dashed #4CAF50;
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(76, 175, 80, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #4CAF50, transparent);
+            animation: scan 2s infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(200px); }
+        }
+
+        .scan-icon {
+            width: 60px;
+            height: 60px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .inventory-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .item-details {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .expiry-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .fresh { background: #e8f5e8; color: #2e7d32; }
+        .warning { background: #fff3e0; color: #ef6c00; }
+        .expired { background: #ffebee; color: #c62828; }
+
+        .ai-prediction {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 18px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #4CAF50;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            background: currentColor;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+
+        .floating-scan {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4); }
+            50% { box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6); }
+            100% { box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4); }
+        }
+
+        .screen-title {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .camera-view {
+            background: #000;
+            height: 200px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewfinder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 80px;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+        }
+
+        .viewfinder::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            height: 2px;
+            background: #4CAF50;
+            animation: scanLine 2s infinite;
+        }
+
+        @keyframes scanLine {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(80px); }
+        }
+
+        .prediction-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .prediction-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .ai-badge {
+            background: rgba(255,255,255,0.9);
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .confidence-bar {
+            background: rgba(255,255,255,0.3);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .confidence-fill {
+            background: #4CAF50;
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="design-container">
+        <!-- Home Screen -->
+        <div class="phone-mockup">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>EcoPlate</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="header">
+                    <h1>🥗 EcoPlate</h1>
+                    <p>AI-Powered Food Management</p>
+                </div>
+
+                <div class="content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">Items Tracked</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Expiring Soon</div>
+                        </div>
+                    </div>
+
+                    <div class="ai-prediction">
+                        <div class="ai-icon">🤖</div>
+                        <h3>Smart Insights</h3>
+                        <p>Your milk expires in 2 days. Consider using it for smoothies!</p>
+                    </div>
+
+                    <h3 style="margin-bottom: 15px; color: #333;">Recent Items</h3>
+                    
+                    <div class="inventory-item">
+                        <div class="item-info">
+                            <div class="item-name">Organic Milk</div>
+                            <div class="item-details">Added 3 days ago • 1L</div>
+                            <span class="expiry-badge warning">Expires in 2 days</span>
+                        </div>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div class="item-info">
+                            <div class="item-name">Whole Wheat Bread</div>
+                            <div class="item-details">Added 1 day ago • 500g</div>
+                            <span class="expiry-badge fresh">Fresh for 5 days</span>
+                        </div>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div class="item-info">
+                            <div class="item-name">Greek Yogurt</div>
+                            <div class="item-details">Added 5 days ago • 150g</div>
+                            <span class="expiry-badge expired">Expired yesterday</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-scan">📱</div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item active">
+                        <div class="nav-icon">🏠</div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📦</div>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📊</div>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">⚙️</div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barcode Scanner Screen -->
+        <div class="phone-mockup">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>Scanner</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="screen-title">
+                    Barcode Scanner
+                </div>
+
+                <div class="content">
+                    <div class="camera-view">
+                        <div class="viewfinder">
+                            <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); color: #4CAF50; font-size: 12px; background: rgba(0,0,0,0.7); padding: 5px 10px; border-radius: 15px;">
+                                Align barcode within frame
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h3 style="color: #333; margin-bottom: 10px;">Ready to Scan</h3>
+                        <p style="color: #666; font-size: 14px;">Position the barcode within the green frame</p>
+                    </div>
+
+                    <div style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <h4 style="color: #333; margin-bottom: 10px;">✨ Smart Features</h4>
+                        <ul style="color: #666; font-size: 14px; line-height: 1.6;">
+                            <li>• Auto-detects product information</li>
+                            <li>• Fetches nutritional data</li>
+                            <li>• Adds to inventory instantly</li>
+                            <li>• AI-powered expiry prediction</li>
+                        </ul>
+                    </div>
+
+                    <button class="btn-primary">
+                        📷 Start Scanning
+                    </button>
+
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button style="background: none; border: none; color: #4CAF50; font-size: 14px; text-decoration: underline;">
+                            Manual entry instead
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📦</div>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">📱</div>
+                        <span>Scan</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">⚙️</div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expiry Prediction Screen -->
+        <div class="phone-mockup">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>AI Predictions</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="screen-title">
+                    🤖 Expiry Predictions
+                </div>
+
+                <div class="content">
+                    <div class="prediction-card">
+                        <div class="prediction-header">
+                            <h3>Organic Bananas</h3>
+                            <span class="ai-badge">AI POWERED</span>
+                        </div>
+                        <p style="margin-bottom: 10px;">Expected to ripen in <strong>2-3 days</strong></p>
+                        <p style="font-size: 13px; opacity: 0.8;">Based on: temperature, humidity, ripeness stage</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 89%;"></div>
+                        </div>
+                        <p style="font-size: 11px; margin-top: 5px;">89% confidence</p>
+                    </div>
+
+                    <div class="prediction-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                        <div class="prediction-header">
+                            <h3>Fresh Lettuce</h3>
+                            <span class="ai-badge">AI POWERED</span>
+                        </div>
+                        <p style="margin-bottom: 10px;">Will stay fresh for <strong>5-7 days</strong></p>
+                        <p style="font-size: 13px; opacity: 0.8;">Optimal storage detected in crisper drawer</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 94%;"></div>
+                        </div>
+                        <p style="font-size: 11px; margin-top: 5px;">94% confidence</p>
+                    </div>
+
+                    <div class="prediction-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                        <div class="prediction-header">
+                            <h3>Chicken Breast</h3>
+                            <span class="ai-badge">AI POWERED</span>
+                        </div>
+                        <p style="margin-bottom: 10px;">Use within <strong>1-2 days</strong></p>
+                        <p style="font-size: 13px; opacity: 0.8;">Refrigerated at optimal temperature</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 96%;"></div>
+                        </div>
+                        <p style="font-size: 11px; margin-top: 5px;">96% confidence</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; padding: 20px; text-align: center;">
+                        <div style="font-size: 20px; margin-bottom: 10px;">🧠</div>
+                        <h4>How AI Predictions Work</h4>
+                        <p style="font-size: 13px; margin-top: 10px; opacity: 0.9;">Our AI analyzes storage conditions, food type, freshness indicators, and environmental factors to predict optimal consumption windows.</p>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📦</div>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📱</div>
+                        <span>Scan</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">🤖</div>
+                        <span>AI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Management Screen -->
+        <div class="phone-mockup">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>Inventory</span>
+                    <span>100%</span>
+                </div>
+                
+                <div class="screen-title">
+                    📦 My Inventory
+                </div>
+
+                <div class="content">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button style="flex: 1; padding: 8px 16px; border: 2px solid #4CAF50; background: #4CAF50; color: white; border-radius: 8px; font-size: 12px;">All Items</button>
+                        <button style="flex: 1; padding: 8px 16px; border: 2px solid #4CAF50; background: transparent; color: #4CAF50; border-radius: 8px; font-size: 12px;">Expiring Soon</button>
+                        <button style="flex: 1; padding: 8px 16px; border: 2px solid #4CAF50; background: transparent; color: #4CAF50; border-radius: 8px; font-size: 12px;">Expired</button>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff9a9e, #fecfef); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                            🥛
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">Organic Milk</div>
+                            <div class="item-details">Dairy • 1L • Added 3 days ago</div>
+                            <span class="expiry-badge warning">Expires in 2 days</span>
+                        </div>
+                        <div style="color: #4CAF50; font-size: 18px;">⚠️</div>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                            🍞
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">Whole Wheat Bread</div>
+                            <div class="item-details">Bakery • 500g • Added 1 day ago</div>
+                            <span class="expiry-badge fresh">Fresh for 5 days</span>
+                        </div>
+                        <div style="color: #4CAF50; font-size: 18px;">✅</div>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ffecd2, #fcb69f); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                            🥗
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">Greek Yogurt</div>
+                            <div class="item-details">Dairy • 150g • Added 5 days ago</div>
+                            <span class="expiry-badge expired">Expired yesterday</span>
+                        </div>
+                        <div style="color: #f44336; font-size: 18px;">❌</div>
+                    </div>
+
+                    <div class="inventory-item">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px;">
+                            🍌
+                        </div>
+                        <div class="item-info">
+                            <div class="item-name">Organic Bananas</div>
+                            <div class="item-details">Produce • 6 pieces • Added today</div>
+                            <span class="expiry-badge warning">Ripening in 2 days</span>
+                        </div>
+                        <div style="color: #4CAF50; font-size: 18px;">🤖</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Ready to add more items?</p>
+                        <button class="btn-primary">
+                            📱 Scan New Item
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">📦</div>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📱</div>
+                        <span>Scan</span>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">⚙️</div>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
